@@ -1,0 +1,103 @@
+package com.nhnacademy.minidooray_gateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+
+
+/**
+ * Security 설정
+ * #TODO: Security 설정 완료할것.
+ * #TODO: .exceptionHandling() 구현
+ */
+
+
+
+@Configuration
+@EnableWebSecurity
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                    .anyRequest()
+                    .permitAll()
+                .and()
+                .formLogin()
+                    .usernameParameter("userId")
+                    .passwordParameter("password")
+                    .loginPage("/auth/login")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                .and()
+                .oauth2Login()
+                    .clientRegistrationRepository(clientRegistrationRepository())
+                    .authorizedClientService(authorizedClientService())
+                    .loginPage("/oauth2/authorization/github")
+                    .defaultSuccessUrl("/")
+                .and()
+                    .sessionManagement()
+                    .sessionFixation()
+                    .none()
+                .and()
+                    .headers()
+                    .frameOptions().disable()
+                .and()
+                    .csrf()
+                    .disable()
+                .build();
+    }
+
+    //#TODO: Password관련
+//    @Bean
+//    public AuthenticationProvider authenticationProvider(CustomUserDetailsService customUserDetailsService) {
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(customUserDetailsService);
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//
+//        return authenticationProvider;
+//    }
+
+    //#TODO: PasswordEncoder 구현할것.
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    //#TODO: OAuth구현 InMemoryOAuth2AuthorizedClientService를 사용하지 않고, DB를 사용하여 구현할것.
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(github());
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService() {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository());
+    }
+
+    //#TODO: Github OAuth 클라이언트 ID 새로 발급 처리할것
+    private ClientRegistration github() {
+        return CommonOAuth2Provider.GITHUB.getBuilder("github")
+                .userNameAttributeName("name")
+                .clientId("a5e21da872b3a0125eba")
+                .clientSecret("b8c6145f7a1ce9f670b31efd1c50e719b07541fb")
+                .build();
+    }
+}

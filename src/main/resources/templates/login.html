@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sign in NHN 아카데미</title>
+    <style>
+        body {
+            font-family: Noto Sans KR,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+        }
+
+        .login-container {
+            width: 300px;
+            padding: 20px;
+            background-color: transparent;
+            border: none;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container h5 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0;
+            background: transparent;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 14px; /* Increased padding to increase height */
+            border: none;
+            background-color: #125de6;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-container img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"],
+        .login-container button {
+            display: block;
+        }
+
+        .login-container button {
+            margin-top: 10px;
+        }
+
+        .login-container a {
+            color: gray;
+            font-size: 14px;
+        }
+
+        /* Custom styles */
+        .login-container title {
+            color: #125de6;
+            font-size: 17px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 35px; /* Gap between text and '로그인' */
+        }
+
+        .login-container .title .login-text {
+            color: black;
+            font-size: 15px;
+        }
+
+        .login-container p {
+            margin: 5px 0; /* Reduce margin to reduce gap between texts */
+        }
+
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <img src="https://iam.nhncloud.com/dist/1685615832567/assets/img/logo-nhncloud-public@2x.81c5fef0b814862c936675cc56907c79.png"
+         alt="NHN">
+    <p style="color: #125de6; font-size: 17px">NHN 아카데미</p>
+    <p>Dooray! 서비스 이용을 위해 로그인합니다.</p>
+    <input type="text" placeholder="아이디" required>
+    <input type="password" placeholder="비밀번호" required>
+    <button>로그인</button>
+    <button>Github 로그인</button>
+    <p><a href="#">회원가입</a></p>
+    <!--    <p>계정이 없으신가요?</p>-->
+    <!--    <p>조직 관리자에게 문의하여 계정 추가를 요청하세요.</p>-->
+</div>
+</body>
+</html>

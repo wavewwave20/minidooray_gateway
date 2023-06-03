@@ -24,11 +24,11 @@ public class LoginRestController {
 
     private final AccountService accountService;
 
-    @PostMapping("/auth/login")
-    public String postApiLogin(@RequestBody UserLoginDto userLoginDto) {
-        accountService.normalLogin(userLoginDto);
-        return "redirect:/";
-    }
+//    @PostMapping("/auth/login")
+//    public String postApiLogin(@RequestBody UserLoginDto userLoginDto) {
+//        accountService.normalLogin(userLoginDto);
+//        return "redirect:/";
+//    }
 
 }
 

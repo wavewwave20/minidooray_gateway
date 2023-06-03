@@ -20,28 +20,15 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import javax.annotation.PostConstruct;
 
 
-/**
- * Security 설정
- * #TODO: Security 설정 완료할것.
- * #TODO: .exceptionHandling() 구현
- */
-
-
-
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Lazy
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    @Lazy
     private OAuth2AuthorizedClientService authorizedClientService;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -62,8 +49,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .and()
                 .oauth2Login()
-                .clientRegistrationRepository(clientRegistrationRepository)
-                .authorizedClientService(authorizedClientService)
                 .loginPage("/oauth2/authorization/github")
                 .defaultSuccessUrl("/")
                 .and()
@@ -75,27 +60,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions().disable()
                 .and()
                 .csrf()
-                .disable()
-                .build();
+                .disable();
     }
 
-    //#TODO: Password관련
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(CustomUserDetailsService customUserDetailsService) {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(customUserDetailsService);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//
-//        return authenticationProvider;
-//    }
-
-    //#TODO: PasswordEncoder 구현할것.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //#TODO: OAuth구현 InMemoryOAuth2AuthorizedClientService를 사용하지 않고, DB를 사용하여 구현할것.
     @Bean
     public ClientRegistration github() {
         return CommonOAuth2Provider.GITHUB.getBuilder("github")
@@ -104,7 +76,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clientSecret("b8c6145f7a1ce9f670b31efd1c50e719b07541fb")
                 .build();
     }
-
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(ClientRegistration github) {
@@ -115,5 +86,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public OAuth2AuthorizedClientService authorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
         return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
     }
-
 }

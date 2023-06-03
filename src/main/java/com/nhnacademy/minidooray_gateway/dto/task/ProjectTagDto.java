@@ -7,5 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class TagDto {
+public class ProjectTagDto {
+    private Long tagId;
+    private String tagName;
+    private Long projectId;
 }

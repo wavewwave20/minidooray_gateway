@@ -8,4 +8,9 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class CommentDto {
+    private Long commentId;
+    private String commentContent;
+    private String commentCreationDate;
+    private String userId;
+    private String taskId;
 }

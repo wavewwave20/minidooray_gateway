@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Sign in NHN 아카데미</title>
     <style>
         body {
-            font-family: Noto Sans KR,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji;
+            font-family: Noto Sans KR, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji;
             margin: 0;
             padding: 0;
             font-size: 15px;
@@ -87,7 +87,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 35px; /* Gap between text and '로그인' */
+            gap: 35px;
         }
 
         .login-container .title .login-text {
@@ -96,7 +96,7 @@
         }
 
         .login-container p {
-            margin: 5px 0; /* Reduce margin to reduce gap between texts */
+            margin: 5px 0;
         }
 
     </style>
@@ -105,15 +105,15 @@
 <div class="login-container">
     <img src="https://iam.nhncloud.com/dist/1685615832567/assets/img/logo-nhncloud-public@2x.81c5fef0b814862c936675cc56907c79.png"
          alt="NHN">
-    <p style="color: #125de6; font-size: 17px">NHN 아카데미</p>
+    <p style="color: #125de6; font-size: 17px;font-weight: bold;">NHN 아카데미</p>
     <p>Dooray! 서비스 이용을 위해 로그인합니다.</p>
-    <input type="text" placeholder="아이디" required>
-    <input type="password" placeholder="비밀번호" required>
-    <button>로그인</button>
+    <form th:object="${userLoginDto}" method="post">
+        <input type="text" placeholder="아이디" th:field="*{userId}" required>
+        <input type="password" placeholder="비밀번호" th:field="*{password}" required>
+        <button>로그인</button>
+    </form>
     <button>Github 로그인</button>
     <p><a href="#">회원가입</a></p>
-    <!--    <p>계정이 없으신가요?</p>-->
-    <!--    <p>조직 관리자에게 문의하여 계정 추가를 요청하세요.</p>-->
 </div>
 </body>
 </html>

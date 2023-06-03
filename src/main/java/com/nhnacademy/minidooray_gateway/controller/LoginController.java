@@ -6,6 +6,7 @@ import com.nhnacademy.minidooray_gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,8 @@ public class LoginController {
     private final AccountService accountService;
 
     @GetMapping("/auth/login")
-    public String getLogin() {
+    public String getLogin(UserLoginDto userLoginDto, Model model) {
+        model.addAttribute("userLoginDto", userLoginDto);
         return "login";
     }
 
@@ -26,6 +28,8 @@ public class LoginController {
         accountService.normalLogin(userLoginDto);
         return "redirect:/";
     }
+
+
 
 
 }

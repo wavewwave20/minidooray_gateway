@@ -2,6 +2,7 @@ package com.nhnacademy.minidooray_gateway.controller;
 
 
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginDto;
+import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
 import com.nhnacademy.minidooray_gateway.service.AccountService;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,21 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping("/auth/logout")
+    public void getLogout() {
+        accountService.logout();
+    }
+
+    @GetMapping("/auth/register")
+    public String getRegister(UserRegisterDto userRegisterDto, Model model) {
+        model.addAttribute("userRegisterDto", userRegisterDto);
+        return "register";
+    }
+
+    @PostMapping("/auth/register")
+    public String postRegister() {
+        return "redirect:/";
+    }
 
 
 

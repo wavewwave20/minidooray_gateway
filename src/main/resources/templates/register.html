@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Sign in NHN 아카데미</title>
+    <title>Sign up NHN 아카데미</title>
     <style>
         body {
             font-family: Noto Sans KR, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji;
@@ -33,7 +33,8 @@
         }
 
         .login-container input[type="text"],
-        .login-container input[type="password"] {
+        .login-container input[type="password"],
+        .login-container input[type="email"] {
             width: 100%;
             padding: 10px 0;
             margin-bottom: 10px;
@@ -66,7 +67,8 @@
 
         .login-container input[type="text"],
         .login-container input[type="password"],
-        .login-container button {
+        .login-container button,
+        .login-container input[type="email"] {
             display: block;
         }
 
@@ -98,7 +100,6 @@
         .login-container p {
             margin: 5px 0;
         }
-
     </style>
 </head>
 <body>
@@ -106,20 +107,17 @@
     <img src="https://iam.nhncloud.com/dist/1685615832567/assets/img/logo-nhncloud-public@2x.81c5fef0b814862c936675cc56907c79.png"
          alt="NHN">
     <p style="color: #125de6; font-size: 17px;font-weight: bold;">NHN 아카데미</p>
-    <p>Dooray! 서비스 이용을 위해 로그인합니다.</p>
-    <form th:object="${userLoginDto}" method="post">
+    <p>Dooray! 가입을 위해 정보를 입력해 주세요.</p>
+    <form th:object="${userRegisterDto}" method="post">
         <input type="text" placeholder="아이디" th:field="*{userId}" required>
         <input type="password" placeholder="비밀번호" th:field="*{password}" required>
-        <button>로그인</button>
+        <input type="text" placeholder="닉네임" th:field="*{userNickName}" required>
+        <input type="email" placeholder="이메일" th:field="*{userEmail}" required>
+        <button>회원가입</button>
     </form>
-    <button onclick="redirectToGitHub()">GitHub 로그인</button>
-    <p><a href="/auth/register">회원가입</a></p>
+    <p>이미 가입하셨나요? <a href="/">로그인</a></p>
 </div>
 
-<script>
-    function redirectToGitHub() {
-        window.location.href = "/oauth2/authorization/github";
-    }
-</script>
+
 </body>
 </html>

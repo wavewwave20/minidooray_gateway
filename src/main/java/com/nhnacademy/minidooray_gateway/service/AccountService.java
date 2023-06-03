@@ -9,4 +9,7 @@ public class AccountService {
     public void normalLogin(UserLoginDto userLoginDto) {
 
     }
+
+    public void logout() {
+    }
 }

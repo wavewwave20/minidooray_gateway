@@ -26,7 +26,7 @@ public class LoginController {
 
     @PostMapping("/auth/login")
     public String postLogin(@RequestBody UserLoginDto userLoginDto) {
-        accountService.normalLogin(userLoginDto);
+        accountService.login(userLoginDto);
         return "redirect:/";
     }
 
@@ -42,7 +42,8 @@ public class LoginController {
     }
 
     @PostMapping("/auth/register")
-    public String postRegister() {
+    public String postRegister(@RequestBody UserRegisterDto userRegisterDto) {
+        accountService.register(userRegisterDto);
         return "redirect:/";
     }
 

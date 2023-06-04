@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 
 @Configuration
@@ -59,37 +60,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .frameOptions().disable()
                 .and()
+                .sessionManagement()
+                .maximumSessions(1) // 동시 세션 수 설정 (원하는 값으로 변경 가능)
+                .maxSessionsPreventsLogin(false) // 동시 로그인 방지 설정 (false로 설정하여 기존 세션을 무효화하고 새로운 세션을 허용)
+                .expiredUrl("/login") // 세션 만료 시 이동할 URL 설정
+                .and()
+                .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
+                .sessionFixation().migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
+                .and()
+
                 .csrf()
                 .disable();
     }
 
-    /**TODO:############Redis설정을 위한 추가##############
-     *
+    /**
+     * TODO:############Redis설정을 위한 추가##############
+     * <p>
      * .sessionManagement()
-     *                 .maximumSessions(1) // 동시 세션 수 설정 (원하는 값으로 변경 가능)
-     *                 .maxSessionsPreventsLogin(false) // 동시 로그인 방지 설정 (false로 설정하여 기존 세션을 무효화하고 새로운 세션을 허용)
-     *                 .expiredUrl("/login") // 세션 만료 시 이동할 URL 설정
-     *                 .and()
-     *                 .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
-     *                 .sessionFixation().migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
-     *                 .and()
-     *                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
-     *                 .and()
-     *             .and()
-     *
-     *
+     * .maximumSessions(1) // 동시 세션 수 설정 (원하는 값으로 변경 가능)
+     * .maxSessionsPreventsLogin(false) // 동시 로그인 방지 설정 (false로 설정하여 기존 세션을 무효화하고 새로운 세션을 허용)
+     * .expiredUrl("/login") // 세션 만료 시 이동할 URL 설정
+     * .and()
+     * .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
+     * .sessionFixation().migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
+     * .and()
+     * .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
+     * .and()
+     * .and()
+     * <p>
+     * <p>
      * .logout()
-     *                 .invalidateHttpSession(true) // 로그아웃 시 세션 무효화
-     *                 .deleteCookies("JSESSIONID") // 로그아웃 시 쿠키 삭제
-     *                 .and()
-     *             .and()
+     * .invalidateHttpSession(true) // 로그아웃 시 세션 무효화
+     * .deleteCookies("JSESSIONID") // 로그아웃 시 쿠키 삭제
+     * .and()
+     * .and()
      *
-     *
-     *  @Bean
-     *     public HttpSessionEventPublisher httpSessionEventPublisher() {
-     *         return new HttpSessionEventPublisher();
-     *     }
+     * @Bean public HttpSessionEventPublisher httpSessionEventPublisher() {
+     * return new HttpSessionEventPublisher();
+     * }
      */
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

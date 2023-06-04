@@ -19,6 +19,7 @@ public class AccountService {
     private final AccountProperties accountProperties;
     private final RestTemplate restTemplate;
 
+    //#TODO:RestTemplate 수정요망
     public UserLoginResponseDto login(UserLoginDto userLoginDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

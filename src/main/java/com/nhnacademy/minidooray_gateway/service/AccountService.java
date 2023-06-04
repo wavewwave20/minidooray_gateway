@@ -2,6 +2,7 @@ package com.nhnacademy.minidooray_gateway.service;
 
 import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginDto;
+import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,13 +19,13 @@ public class AccountService {
     private final AccountProperties accountProperties;
     private final RestTemplate restTemplate;
 
-    public UserLoginDto login(UserLoginDto userLoginDto) {
+    public UserLoginResponseDto login(UserLoginDto userLoginDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserLoginDto> httpEntity = new HttpEntity<>(userLoginDto, httpHeaders);
         String url = "http://" + accountProperties.getAccountIp() + ":" + accountProperties.getAccountPort() + "/accountapi/login";
-        ResponseEntity<UserLoginDto> responseEntity = restTemplate.exchange(
+        ResponseEntity<UserLoginResponseDto> responseEntity = restTemplate.exchange(
                 url,
                 HttpMethod.POST,
                 httpEntity,
@@ -40,5 +41,14 @@ public class AccountService {
     public void register(UserRegisterDto userRegisterDto) {
     }
 
+    //@Getter
+    //@Setter
+    //public class LoginResponseDto {
+    //    private String userUUID;
+    //
+    //    private String userId;
+    //
+    //    private String userNickname;
+    //}
 
 }

@@ -63,6 +63,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable();
     }
 
+    /**TODO:############Redis설정을 위한 추가##############
+     *
+     * .sessionManagement()
+     *                 .maximumSessions(1) // 동시 세션 수 설정 (원하는 값으로 변경 가능)
+     *                 .maxSessionsPreventsLogin(false) // 동시 로그인 방지 설정 (false로 설정하여 기존 세션을 무효화하고 새로운 세션을 허용)
+     *                 .expiredUrl("/login") // 세션 만료 시 이동할 URL 설정
+     *                 .and()
+     *                 .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
+     *                 .sessionFixation().migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
+     *                 .and()
+     *                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
+     *                 .and()
+     *             .and()
+     *
+     *
+     * .logout()
+     *                 .invalidateHttpSession(true) // 로그아웃 시 세션 무효화
+     *                 .deleteCookies("JSESSIONID") // 로그아웃 시 쿠키 삭제
+     *                 .and()
+     *             .and()
+     *
+     *
+     *  @Bean
+     *     public HttpSessionEventPublisher httpSessionEventPublisher() {
+     *         return new HttpSessionEventPublisher();
+     *     }
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

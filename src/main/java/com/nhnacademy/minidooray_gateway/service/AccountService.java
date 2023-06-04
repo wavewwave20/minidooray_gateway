@@ -22,12 +22,15 @@ public class AccountService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp() + ":" + accountProperties.getAccountIp() + "/accountapi/login";
-        ResponseEntity<UserLoginDto> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-        });
+        HttpEntity<UserLoginDto> httpEntity = new HttpEntity<>(userLoginDto, httpHeaders);
+        String url = "http://" + accountProperties.getAccountIp() + ":" + accountProperties.getAccountPort() + "/accountapi/login";
+        ResponseEntity<UserLoginDto> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<>() {}
+        );
         return responseEntity.getBody();
-
     }
 
     public void logout() {

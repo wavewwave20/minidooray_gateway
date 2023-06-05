@@ -32,8 +32,10 @@ public class BoardController {
         log.info("userEmail:{}", request.getSession().getAttribute("userEmail"));
         log.info("userNickName:{}", request.getSession().getAttribute("userNickName"));
 
-        model.addAttribute(doorayService.getAllProjectList());
-        return "board";
+        return "board2";
+
+//        model.addAttribute(doorayService.getAllProjectList());
+//        return "board";
     }
 
     @GetMapping("/board/{id}")

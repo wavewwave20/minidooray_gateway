@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Setter
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     /**
      * 로그인 성공시 처리 커스텀 핸들러
@@ -53,8 +52,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        //super.onAuthenticationSuccess(request, response, authentication);
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
 
@@ -68,9 +65,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
 
-        session.setAttribute("username", userDetails.getUsername());
-        session.setAttribute("authority", authorities.get(0).getAuthority());
+        log.info("Session ID: " + session.getId());
 
-//        response.sendRedirect("/dooray/board");
+        response.sendRedirect("/dooray/board");
     }
 }

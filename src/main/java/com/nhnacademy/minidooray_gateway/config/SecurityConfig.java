@@ -44,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserInfoBeanForRedis userInfoBeanForRedis;
 
+    @Autowired
+    private AuthenticationSuccessHandler loginSuccessHandler;
+
 
     //#TODO:REDIS에 세션 태우고 삭제하기 수정요망
 
@@ -58,8 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password")
                     .loginPage("/auth/login")
                     .loginProcessingUrl("/login")
-                    .successHandler(new LoginSuccessHandler(redisTemplate, userInfoBeanForRedis))
-                    .defaultSuccessUrl("/dooray/board")
+                    .successHandler(loginSuccessHandler(redisTemplate, userInfoBeanForRedis))
                 .and()
                 .logout()
                     .logoutUrl("/logout")
@@ -69,12 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                     .loginPage("/oauth2/authorization/github")
-//                    .successHandler()
                     .defaultSuccessUrl("/")
-//                .and()
-//                    .sessionManagement()
-//                    .sessionFixation()
-//                    .none()
                 .and()
                     .headers()
                     .frameOptions()

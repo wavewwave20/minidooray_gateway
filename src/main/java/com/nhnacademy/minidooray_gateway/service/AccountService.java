@@ -29,7 +29,6 @@ public class AccountService {
     private final AccountProperties accountProperties;
     private final RestTemplate restTemplate;
     private final UserInfoBeanForRedis userInfoBeanForRedis;
-
     private final PasswordEncoder passwordEncoder;
 
 
@@ -56,9 +55,9 @@ public class AccountService {
             //TODO: userUUID, userNickname 인메모리 저장하여 successHandler에서 사용 필
 //            ThreadLocal.set(userInfo.getUserNickname(), userInfo.getUserUUID());
 
-//            userInfoBeanForRedis.setUserUUId(responseEntity.getBody().getUserUUID());
-//            userInfoBeanForRedis.setUserNickname(responseEntity.getBody().getUserNickname());
-//            userInfoBeanForRedis.setUserEmail(responseEntity.getBody().getUserEmail());
+            userInfoBeanForRedis.setUserUUId(responseEntity.getBody().getUserUUID());
+            userInfoBeanForRedis.setUserNickname(responseEntity.getBody().getUserNickname());
+            userInfoBeanForRedis.setUserEmail(responseEntity.getBody().getUserEmail());
 
 
             return new User(Objects.requireNonNull(userInfo).getUserId(), userInfo.getUserPassword(),

@@ -3,6 +3,7 @@ package com.nhnacademy.minidooray_gateway.config;
 
 import com.nhnacademy.minidooray_gateway.handler.LoginSuccessHandler;
 import com.nhnacademy.minidooray_gateway.service.CustomUserDetailsService;
+import com.nhnacademy.minidooray_gateway.service.UserInfoBeanForRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
+    @Autowired
+    private UserInfoBeanForRedis userInfoBeanForRedis;
+
 
     //#TODO:REDIS에 세션 태우고 삭제하기 수정요망
 
@@ -54,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password")
                     .loginPage("/auth/login")
                     .loginProcessingUrl("/login")
-                    .successHandler(new LoginSuccessHandler(redisTemplate))
+                    .successHandler(new LoginSuccessHandler(redisTemplate, userInfoBeanForRedis))
                     .defaultSuccessUrl("/dooray/board")
                 .and()
                 .logout()
@@ -126,8 +130,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationSuccessHandler loginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
-        return new LoginSuccessHandler(redisTemplate);
+    public AuthenticationSuccessHandler loginSuccessHandler(RedisTemplate<String, String> redisTemplate, UserInfoBeanForRedis userInfoBeanForRedis) {
+        return new LoginSuccessHandler(redisTemplate, userInfoBeanForRedis);
     }
 
     @Bean

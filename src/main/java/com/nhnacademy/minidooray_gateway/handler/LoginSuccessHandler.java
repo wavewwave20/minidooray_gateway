@@ -4,8 +4,10 @@ import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import com.nhnacademy.minidooray_gateway.service.AccountService;
 import com.nhnacademy.minidooray_gateway.service.UserInfoBeanForRedis;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,10 +27,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@RequiredArgsConstructor
+@Setter
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-
-    private UserInfoBeanForRedis userInfoBeanForRedis;
     /**
      * 로그인 성공시 처리 커스텀 핸들러
      * #TODO Redis로 변경 요망(Session Redis에 태우기)
@@ -41,6 +41,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
      */
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final UserInfoBeanForRedis userInfoBeanForRedis;
+
+    public LoginSuccessHandler(RedisTemplate<String, String> redisTemplate, UserInfoBeanForRedis userInfoBeanForRedis) {
+        this.redisTemplate = redisTemplate;
+        this.userInfoBeanForRedis = userInfoBeanForRedis;
+    }
 
 
     @Override
@@ -57,9 +63,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
         redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());
-//        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
-//        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
-//        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
+        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
+        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
+        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
 
         session.setAttribute("username", userDetails.getUsername());

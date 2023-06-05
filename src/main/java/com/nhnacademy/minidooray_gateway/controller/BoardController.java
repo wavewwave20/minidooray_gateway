@@ -4,12 +4,15 @@ package com.nhnacademy.minidooray_gateway.controller;
 import com.nhnacademy.minidooray_gateway.dto.task.ProjectDto;
 import com.nhnacademy.minidooray_gateway.service.DoorayService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/dooray")
 @RequiredArgsConstructor
@@ -21,7 +24,13 @@ public class BoardController {
      */
 
     @GetMapping("/board")
-    public String getBoardList(Model model) {
+    public String getBoardList(Model model, HttpServletRequest request) {
+
+        log.info("username:{}", request.getSession().getAttribute("username"));
+        log.info("userUUID:{}", request.getSession().getAttribute("userUUID"));
+        log.info("authority:{}", request.getSession().getAttribute("authority"));
+        log.info("userEmail:{}", request.getSession().getAttribute("userEmail"));
+        log.info("userNickName:{}", request.getSession().getAttribute("userNickName"));
 
         model.addAttribute(doorayService.getAllProjectList());
         return "board";

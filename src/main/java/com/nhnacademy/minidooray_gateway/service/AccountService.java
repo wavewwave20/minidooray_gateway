@@ -45,10 +45,11 @@ public class AccountService {
                 url,
                 HttpMethod.GET,
                 httpEntity,
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
-        if(Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userId)) {
+        if (Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userId)) {
 
             UserLoginResponseDto userInfo = responseEntity.getBody();
 
@@ -80,7 +81,8 @@ public class AccountService {
         String url = "http://" + accountProperties.getAccountIp()
                 + ":" + accountProperties.getAccountPort() + "/accountapi/signup";
 
-        restTemplate.exchange( url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {});
+        restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+        });
 
     }
 

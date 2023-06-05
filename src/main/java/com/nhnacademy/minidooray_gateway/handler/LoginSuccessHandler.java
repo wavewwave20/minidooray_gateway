@@ -1,20 +1,12 @@
 package com.nhnacademy.minidooray_gateway.handler;
 
-import com.nhnacademy.minidooray_gateway.config.AccountProperties;
-import com.nhnacademy.minidooray_gateway.service.AccountService;
 import com.nhnacademy.minidooray_gateway.service.UserInfoBeanForRedis;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 
 import javax.servlet.ServletException;
@@ -28,16 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-    /**
-     * 로그인 성공시 처리 커스텀 핸들러
-     * #TODO Redis로 변경 요망(Session Redis에 태우기)
-     *
-     * @param request
-     * @param response
-     * @param authentication
-     * @throws IOException
-     * @throws ServletException
-     */
 
     private final RedisTemplate<String, String> redisTemplate;
     private final UserInfoBeanForRedis userInfoBeanForRedis;
@@ -57,6 +39,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         HttpSession session = request.getSession(false);
         session.setMaxInactiveInterval(259200); //TODO: 왜 필요한지
+
 
         redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
         redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());

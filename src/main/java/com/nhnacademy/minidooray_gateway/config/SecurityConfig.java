@@ -121,7 +121,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler loginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
-        return new LoginSuccessHandler(accountService, redisTemplate);
+        return new LoginSuccessHandler(redisTemplate);
     }
 
 //    @Bean

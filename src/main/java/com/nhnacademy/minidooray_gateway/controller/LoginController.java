@@ -24,11 +24,11 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/auth/login")
-    public String postLogin(@RequestBody UserLoginDto userLoginDto) {
-        accountService.login(userLoginDto);
-        return "redirect:/";
-    }
+//    @PostMapping("/auth/login")
+//    public String postLogin(@RequestBody UserLoginDto userLoginDto) {
+//        accountService.login(userLoginDto);
+//        return "redirect:/";
+//    }
 
     @GetMapping("/auth/logout")
     public void getLogout() {

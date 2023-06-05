@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class UserDto {
+public class UserRegisterAccountApiDto {
+
     private String userUUID;
     private String userId;
-    private String password;
-    private String userName;
-
+    private String userNickName;
+    private String userEmail;
 }

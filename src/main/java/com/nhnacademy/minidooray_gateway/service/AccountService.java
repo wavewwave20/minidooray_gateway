@@ -69,6 +69,7 @@ public class AccountService {
     }
 
     public void logout() {
+        //#TODO 시큐리티가 해주는지 확인하기(/logout)
     }
 
 
@@ -81,19 +82,42 @@ public class AccountService {
         String url = "http://" + accountProperties.getAccountIp()
                 + ":" + accountProperties.getAccountPort() + "/accountapi/signup";
 
-        restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-        });
+        ResponseEntity<UserRegisterAccountApiDto> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
 
+        if (Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userRegisterDto.getUserId())) {
+            UserRegisterAccountApiDto forTaskApi = responseEntity.getBody();
+            registerUserTaskApi(forTaskApi);
+        }
+        throw new UsernameNotFoundException("no");
     }
 
-    //@Getter
-    //@Setter
-    //public class LoginResponseDto {
-    //    private String userUUID;
-    //
-    //    private String userId;
-    //
-    //    private String userNickname;
-    //}
+    public void deleteUser(String userId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+        String url = "http://" + accountProperties.getAccountIp()
+                + ":" + accountProperties.getAccountPort() + "/accountapi/delete" + "/" + userId;
+        restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
+        });
+    }
+
+    public void updateUser(UserRegisterDto userRegisterDto, String userUUID) {
+        userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
+        String url = "http://" + accountProperties.getAccountIp()
+                + ":" + accountProperties.getAccountPort() + "/accountapi/update" + "/" + userUUID;
+        restTemplate.exchange(url, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
+        });
+    }
 
 }

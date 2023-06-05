@@ -47,7 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler loginSuccessHandler;
 
 
-    //#TODO:REDIS에 세션 태우고 삭제하기 수정요망
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

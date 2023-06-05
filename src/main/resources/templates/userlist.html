@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>User List NHN 아카데미</title>
+    <style>
+        body {
+            font-family: Noto Sans KR, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .user-list-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .user-list-container img {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .user-list-container p {
+            margin: 5px 0 20px;
+        }
+
+        .user-list-container table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .user-list-container th,
+        .user-list-container td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .user-list-container a {
+            color: #125de6;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .user-list-container a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="user-list-container">
+    <img src="https://iam.nhncloud.com/dist/1685615832567/assets/img/logo-nhncloud-public@2x.81c5fef0b814862c936675cc56907c79.png"
+         alt="NHN">
+    <p style="color: #125de6; font-size: 17px;font-weight: bold;">NHN 아카데미</p>
+    <p>관리자 페이지-모든 유저의 정보를 볼 수 있습니다.</p>
+    <table th:object="${userListDto}">
+        <tr>
+            <th>아이디</th>
+            <th>닉네임</th>
+            <th>이메일</th>
+            <th>상세 정보</th>
+        </tr>
+        <tr th:each="user : *{userList}">
+            <td th:text="*{user.userId}"></td>
+            <td th:text="*{user.userNickName}"></td>
+            <td th:text="*{user.userEmail}"></td>
+            <td><a th:href="@{/user/{id}(id=${user.userId})}">보기</a></td>
+        </tr>
+    </table>
+    <p><a href="/admin/dashboard">돌아가기</a></p>
+</div>
+</body>
+</html>

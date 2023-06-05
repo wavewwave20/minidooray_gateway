@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,11 +25,11 @@ public class LoginController {
         return "login";
     }
 
-//    @PostMapping("/auth/login")
-//    public String postLogin(@RequestBody UserLoginDto userLoginDto) {
-//        accountService.login(userLoginDto);
-//        return "redirect:/";
-//    }
+    @PostMapping("/auth/login")
+    public String postLogin(@ModelAttribute UserLoginDto userLoginDto) {
+        //accountService.login(userLoginDto.getUserId());
+        return "redirect:/";
+    }
 
     @GetMapping("/auth/logout")
     public void getLogout() {
@@ -42,11 +43,9 @@ public class LoginController {
     }
 
     @PostMapping("/auth/register")
-    public String postRegister(@RequestBody UserRegisterDto userRegisterDto) {
+    public String postRegister(@ModelAttribute UserRegisterDto userRegisterDto) {
         accountService.register(userRegisterDto);
         return "redirect:/";
     }
-
-
 
 }

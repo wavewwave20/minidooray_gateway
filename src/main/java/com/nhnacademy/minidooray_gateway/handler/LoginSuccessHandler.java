@@ -25,9 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-    @Autowired
+
     private UserInfoBeanForRedis userInfoBeanForRedis;
     /**
      * 로그인 성공시 처리 커스텀 핸들러
@@ -57,9 +56,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
         redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
         redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());
-        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
-        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
-        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
+//        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
+//        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
+//        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
 
         session.setAttribute("username", userDetails.getUsername());

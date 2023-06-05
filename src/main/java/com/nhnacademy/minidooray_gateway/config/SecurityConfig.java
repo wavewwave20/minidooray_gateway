@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -36,11 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
+
+
     //#TODO:REDIS에 세션 태우고 삭제하기 수정요망
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/", "/board", "/login", "/signup", "/auth/*").permitAll()
+//                .antMatchers("/project/*", "/logout", "/members/*", "/comment/*"
+//                        , "/mile/*", "/tag/*", "/task/*").hasAnyAuthority("ROLE_MEMBER")
                 .anyRequest().permitAll()
                 .and()
                     .formLogin()
@@ -48,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password")
                     .loginPage("/auth/login")
                     .loginProcessingUrl("/login")
-                    .successHandler(new LoginSuccessHandler(null))
+                    .successHandler(new LoginSuccessHandler(redisTemplate))
+                    .successForwardUrl("/dooray/board")
                 .and()
                 .logout()
                     .logoutUrl("/logout")
@@ -60,10 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/oauth2/authorization/github")
 //                    .successHandler()
                     .defaultSuccessUrl("/")
-//                .and()
-//                    .sessionManagement()
-//                    .sessionFixation()
-//                    .none()
+                .and()
+                    .sessionManagement()
+                    .sessionFixation()
+                    .none()
                 .and()
                     .headers()
                     .frameOptions()
@@ -122,6 +131,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler loginSuccessHandler(RedisTemplate<String, String> redisTemplate) {
         return new LoginSuccessHandler(redisTemplate);
+    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        return redisTemplate;
     }
 
 //    @Bean

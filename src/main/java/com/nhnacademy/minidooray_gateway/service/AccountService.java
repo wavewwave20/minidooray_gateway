@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,8 @@ public class AccountService {
     private final RestTemplate restTemplate;
     private final UserInfoBeanForRedis userInfoBeanForRedis;
 
+    private final PasswordEncoder passwordEncoder;
+
 
     //#TODO:RestTemplate 수정요
     public UserDetails login(String userId) {
@@ -36,11 +39,12 @@ public class AccountService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp() + ":" + accountProperties.getAccountPort() + "/accountapi/login";
+        String url = "http://" + accountProperties.getAccountIp()
+                + ":" + accountProperties.getAccountPort() + "/accountapi/login" + "/" + userId;
 
         ResponseEntity<UserLoginResponseDto> responseEntity = restTemplate.exchange(
                 url,
-                HttpMethod.POST,
+                HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<>() {}
         );
@@ -52,9 +56,9 @@ public class AccountService {
             //TODO: userUUID, userNickname 인메모리 저장하여 successHandler에서 사용 필
 //            ThreadLocal.set(userInfo.getUserNickname(), userInfo.getUserUUID());
 
-            userInfoBeanForRedis.setUserUUId(responseEntity.getBody().getUserUUID());
-            userInfoBeanForRedis.setUserNickname(responseEntity.getBody().getUserNickname());
-            userInfoBeanForRedis.setUserEmail(responseEntity.getBody().getUserEmail());
+//            userInfoBeanForRedis.setUserUUId(responseEntity.getBody().getUserUUID());
+//            userInfoBeanForRedis.setUserNickname(responseEntity.getBody().getUserNickname());
+//            userInfoBeanForRedis.setUserEmail(responseEntity.getBody().getUserEmail());
 
 
             return new User(Objects.requireNonNull(userInfo).getUserId(), userInfo.getUserPassword(),
@@ -69,6 +73,16 @@ public class AccountService {
 
 
     public void register(UserRegisterDto userRegisterDto) {
+        userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
+        String url = "http://" + accountProperties.getAccountIp()
+                + ":" + accountProperties.getAccountPort() + "/accountapi/signup";
+
+        restTemplate.exchange( url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {});
+
     }
 
     //@Getter

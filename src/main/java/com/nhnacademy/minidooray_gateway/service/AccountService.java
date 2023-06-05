@@ -4,20 +4,32 @@ import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountProperties accountProperties;
     private final RestTemplate restTemplate;
+    private final UserInfoBeanForRedis userInfoBeanForRedis;
+
 
     //#TODO:RestTemplate 수정요망
     public UserLoginResponseDto login(UserLoginDto userLoginDto) {

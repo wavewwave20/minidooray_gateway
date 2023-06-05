@@ -14,4 +14,6 @@ public class AccountProperties {
     private String accountIp;
     @Value("${account.port}")
     private int accountPort;
+
+
 }

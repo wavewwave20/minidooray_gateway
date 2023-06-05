@@ -34,7 +34,7 @@ public class LoginFilter implements Filter {
         }
 
         HttpSession session = httpRequest.getSession(false);
-        boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
+        boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
 
         if (isLoggedIn) {
             filterChain.doFilter(servletRequest, servletResponse);

@@ -22,6 +22,7 @@ public class BoardController {
 
     @GetMapping("/board")
     public String getBoardList(Model model) {
+
         model.addAttribute(doorayService.getAllProjectList());
         return "board";
     }

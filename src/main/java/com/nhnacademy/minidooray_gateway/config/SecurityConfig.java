@@ -46,9 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/board", "/login", "/signup", "/auth/*").permitAll()
-//                .antMatchers("/project/*", "/logout", "/members/*", "/comment/*"
-//                        , "/mile/*", "/tag/*", "/task/*").hasAnyAuthority("ROLE_MEMBER")
+//                .antMatchers("/auth/login").authenticated()
                 .anyRequest().permitAll()
                 .and()
                     .formLogin()
@@ -57,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/auth/login")
                     .loginProcessingUrl("/login")
                     .successHandler(new LoginSuccessHandler(redisTemplate))
-                    .successForwardUrl("/dooray/board")
+                    .defaultSuccessUrl("/dooray/board")
                 .and()
                 .logout()
                     .logoutUrl("/logout")
@@ -69,10 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/oauth2/authorization/github")
 //                    .successHandler()
                     .defaultSuccessUrl("/")
-                .and()
-                    .sessionManagement()
-                    .sessionFixation()
-                    .none()
+//                .and()
+//                    .sessionManagement()
+//                    .sessionFixation()
+//                    .none()
                 .and()
                     .headers()
                     .frameOptions()
@@ -82,14 +80,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .maximumSessions(1) // 동시 세션 수 설정 (원하는 값으로 변경 가능)
                     .maxSessionsPreventsLogin(false) // 동시 로그인 방지 설정 (false로 설정하여 기존 세션을 무효화하고 새로운 세션을 허용)
                     .expiredUrl("/login") // 세션 만료 시 이동할 URL 설정
-                .and()
-                    .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
-                    .sessionFixation()
-                    .migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
-                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
-                .and()
-                .csrf()
-                .disable();
+//                .and()
+//                    .invalidSessionUrl("/login") // 유효하지 않은 세션 시 이동할 URL 설정
+//                    .sessionFixation()
+//                    .migrateSession() // 세션 고정 보호 설정 (migrateSession() 메서드는 새로운 세션을 생성하여 고정 보호를 우회함)
+//                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 세션 항상 생성 설정
+                .and().and()
+                .csrf().disable();
     }
 
     /**

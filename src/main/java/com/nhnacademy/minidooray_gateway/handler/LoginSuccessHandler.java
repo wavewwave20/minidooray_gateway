@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private UserInfoBeanForRedis userInfoBeanForRedis;
     /**
@@ -46,7 +47,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        super.onAuthenticationSuccess(request, response, authentication);
+        //super.onAuthenticationSuccess(request, response, authentication);
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
@@ -63,5 +64,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
         session.setAttribute("username", userDetails.getUsername());
         session.setAttribute("authority", authorities.get(0).getAuthority());
+
+//        response.sendRedirect("/dooray/board");
     }
 }

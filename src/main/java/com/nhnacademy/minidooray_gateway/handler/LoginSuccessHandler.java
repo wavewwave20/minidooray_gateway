@@ -37,13 +37,29 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
      * @throws ServletException
      */
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        HttpSession session = request.getSession();
-        session.setAttribute("username", authentication.getName());
-//        session.setAttribute("userUUID", authentication);
-        response.addCookie(new Cookie("SESSION", session.getId()));
-        response.sendRedirect("/");
+    private final RedisTemplate<String, String> redisTemplate;
 
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
+
+        super.onAuthenticationSuccess(request, response, authentication);
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+
+        HttpSession session = request.getSession(false);
+        session.setMaxInactiveInterval(259200); //TODO: 왜 필요한지
+
+        redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
+        redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());
+        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
+        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
+        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
+        redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
+
+        session.setAttribute("username", userDetails.getUsername());
+        session.setAttribute("authority", authorities.get(0).getAuthority());
     }
 }

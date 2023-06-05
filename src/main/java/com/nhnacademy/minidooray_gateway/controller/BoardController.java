@@ -40,6 +40,7 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String getBoardDetail(@PathVariable Long id, Model model) {
+        //TODO: id에 해당하는 프로젝트의 상세 정보를 가져와서 model에 담아서 리턴
         model.addAttribute("project", doorayService.getProjectDetail(id));
         return "board";
     }

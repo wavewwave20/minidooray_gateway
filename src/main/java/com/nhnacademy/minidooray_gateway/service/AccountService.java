@@ -1,10 +1,9 @@
 package com.nhnacademy.minidooray_gateway.service;
 
-import com.nhnacademy.minidooray_gateway.config.AccountProperties;
+import com.nhnacademy.minidooray_gateway.config.ApiServerProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterAccountApiDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
-import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterTaskApiDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,7 +27,7 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 public class AccountService {
-    private final AccountProperties accountProperties;
+    private final ApiServerProperties apiServerProperties;
     private final RestTemplate restTemplate;
     private final UserInfoBeanForRedis userInfoBeanForRedis;
     private final PasswordEncoder passwordEncoder;
@@ -40,8 +39,8 @@ public class AccountService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/login" + "/" + userId;
+        String url = "http://" + apiServerProperties.getAccountIp()
+                + ":" + apiServerProperties.getAccountPort() + "/accountapi/login" + "/" + userId;
 
         ResponseEntity<UserLoginResponseDto> responseEntity = restTemplate.exchange(
                 url,
@@ -75,15 +74,15 @@ public class AccountService {
     }
 
 
-    //TODO: taskApi, AccountApi api 추가 및 수정 필요
+    //TODO: 아이디 중복처리필요
     public void register(UserRegisterDto userRegisterDto) {
         userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/signup";
+        String url = "http://" + apiServerProperties.getAccountIp()
+                + ":" + apiServerProperties.getAccountPort() + "/accountapi/signup";
 
         ResponseEntity<UserRegisterAccountApiDto> responseEntity = restTemplate.exchange(
                 url,
@@ -97,17 +96,20 @@ public class AccountService {
             UserRegisterAccountApiDto forTaskApi = responseEntity.getBody();
             registerUserTaskApi(forTaskApi);
         }
-        throw new UsernameNotFoundException("no");
+        //throw new UsernameNotFoundException("no");
     }
 
 
+
+    //TODO: taskApi 회원가입 요청 처리필요,
+    //TODO: accountProperties->apiServerProperties 확장
     public void registerUserTaskApi(UserRegisterAccountApiDto userRegisterAccountApiDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserRegisterAccountApiDto> httpEntity = new HttpEntity<>(userRegisterAccountApiDto, httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/signup/taskapi";
+        String url = "http://" + apiServerProperties.getTaskIp()
+                + ":" + apiServerProperties.getTaskPort() + "/taskapi/signup";
         restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
         });
     }
@@ -118,8 +120,8 @@ public class AccountService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/delete" + "/" + userId;
+        String url = "http://" + apiServerProperties.getAccountIp()
+                + ":" + apiServerProperties.getAccountPort() + "/accountapi/delete" + "/" + userId;
         restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
         });
     }
@@ -130,8 +132,8 @@ public class AccountService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/update" + "/" + userUUID;
+        String url = "http://" + apiServerProperties.getAccountIp()
+                + ":" + apiServerProperties.getAccountPort() + "/accountapi/update" + "/" + userUUID;
         restTemplate.exchange(url, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
         });
     }

@@ -98,8 +98,7 @@ public class AccountService {
         }
         throw new UsernameNotFoundException("no");
     }
-
-
+    //#TODO 회원가입시 아래의 메서드 호출됩니다?
     public void registerUserTaskApi(UserRegisterAccountApiDto userRegisterAccountApiDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

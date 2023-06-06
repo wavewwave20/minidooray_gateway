@@ -28,7 +28,6 @@ public class LoginFilter implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
-
         if (isLoggedIn) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
@@ -38,3 +37,4 @@ public class LoginFilter implements Filter {
 
     }
 }
+

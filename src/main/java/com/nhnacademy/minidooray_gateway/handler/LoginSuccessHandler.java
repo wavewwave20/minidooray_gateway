@@ -47,7 +47,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
         redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
-
+        //#TODO 테스트용 세션에 유저네임 추가해야 인증이 잘 작동하는듯 합니다
+        session.setAttribute("username", userDetails.getUsername());
         log.info("Session ID: " + session.getId());
 
         response.sendRedirect("/dooray/board");

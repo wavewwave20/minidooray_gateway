@@ -28,7 +28,7 @@ public class UserDataService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<List<UserDataSearchDto>> httpEntity = new HttpEntity<>(httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata/";
+                + ":" + accountProperties.getAccountPort() + "/api/userdata/";
 
         ResponseEntity<List<UserDataSearchDto>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
         });
@@ -41,7 +41,7 @@ public class UserDataService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserDataSearchDto> httpEntity = new HttpEntity<>(httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata/" + userId;
+                + ":" + accountProperties.getAccountPort() + "/api/userdata/" + userId;
 
         ResponseEntity<UserDataSearchDto> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
         });
@@ -54,7 +54,7 @@ public class UserDataService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserDataSearchDto> httpEntity = new HttpEntity<>(userDataSearchDto, httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata/" + userId;
+                + ":" + accountProperties.getAccountPort() + "/api/userdata/" + userId;
 
         ResponseEntity<UserDataSearchDto> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
         });
@@ -69,7 +69,7 @@ public class UserDataService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata/" + userId;
+                + ":" + accountProperties.getAccountPort() + "/api/userdata/" + userId;
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
         });

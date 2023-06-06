@@ -21,19 +21,20 @@ public class UserDataBoardController {
         return "userlist";
     }
 
-    @GetMapping("/board/{id}")
+    @GetMapping("/board/{userId}")
     public String getUserDataDetail(@PathVariable String userId, Model model) {
-        model.addAttribute("userData", userDataService.getUserDataDetail(userId));
+        UserDataSearchDto userDataSearchDto = userDataService.getUserDataDetail(userId);
+        model.addAttribute("userData", userDataSearchDto );
         return "userdetail";
     }
 
-    @PutMapping("/board/{id}")
+    @PutMapping("/board/{userId}")
     public String putUserData(@PathVariable String userId, @RequestBody UserDataSearchDto userDataSearchDto, Model model) {
         model.addAttribute("userData", userDataService.putUserData(userId, userDataSearchDto));
         return "userdetail";
     }
 
-    @DeleteMapping("/board/{id}")
+    @DeleteMapping("/board/{userId}")
     public String deleteUserData(@PathVariable String userId, Model model) {
         model.addAttribute("userData", userDataService.deleteUserData(userId));
         return "userdetail";

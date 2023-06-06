@@ -8,12 +8,17 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-public class AccountProperties {
+public class ApiServerProperties {
 
-    @Value("${account.ip}")
+    @Value("${api.account.ip}")
     private String accountIp;
-    @Value("${account.port}")
+    @Value("${api.account.port}")
     private int accountPort;
+
+    @Value("${api.task.ip}")
+    private String taskIp;
+    @Value("${api.task.port}")
+    private int taskPort;
 
 
 }

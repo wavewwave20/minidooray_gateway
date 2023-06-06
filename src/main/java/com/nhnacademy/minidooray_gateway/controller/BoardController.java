@@ -3,6 +3,7 @@ package com.nhnacademy.minidooray_gateway.controller;
 
 import com.nhnacademy.minidooray_gateway.dto.task.ProjectDto;
 import com.nhnacademy.minidooray_gateway.service.DoorayService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -32,8 +32,7 @@ public class BoardController {
         log.info("userEmail:{}", request.getSession().getAttribute("userEmail"));
         log.info("userNickName:{}", request.getSession().getAttribute("userNickName"));
 
-        return "board2";
-
+        return "testingboard";
 //        model.addAttribute(doorayService.getAllProjectList());
 //        return "board";
     }
@@ -62,6 +61,8 @@ public class BoardController {
         doorayService.deleteProject(id);
         return "board";
     }
+
+
 
 
 }

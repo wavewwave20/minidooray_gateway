@@ -7,12 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class UserDto {
-    private String userUUID;
+public class UserDataSearchDto {
     private String userId;
-    private String password;
-    private String userName;
-    //#TODO:이메일도 필요하지 않나요?
-
-
+    private String userNickName;
+    private String userEmail;
 }

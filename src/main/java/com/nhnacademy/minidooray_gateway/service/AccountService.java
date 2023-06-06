@@ -4,7 +4,6 @@ import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterAccountApiDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
-import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterTaskApiDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

@@ -14,15 +14,18 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #fff;
+      background-color: #fafafa;
     }
 
     .user-detail-container {
       max-width: 500px;
-      width: 100%;
+      width: 90%;
       padding: 20px;
       box-sizing: border-box;
       text-align: center;
+      border: 1px solid #125de6;
+      border-radius: 10px;
+      background-color: #fff;
     }
 
     .user-detail-container h1 {
@@ -34,10 +37,12 @@
 
     .user-detail-container p {
       margin: 5px 0;
+      font-size: 18px;
     }
 
     .user-detail-container strong {
       font-weight: bold;
+      color: #125de6;
     }
 
     .user-detail-container a {
@@ -53,7 +58,7 @@
 </head>
 <body>
 <div class="user-detail-container">
-  <h1>User Detail</h1>
+  <h1>유저 정보</h1>
   <div th:if="${userData}">
     <p><strong>User ID:</strong> <span th:text="${userData.userId}"></span></p>
     <p><strong>User Nickname:</strong> <span th:text="${userData.userNickName}"></span></p>

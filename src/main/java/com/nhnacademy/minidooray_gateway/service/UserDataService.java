@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooray_gateway.service;
 
-import com.nhnacademy.minidooray_gateway.config.AccountProperties;
+import com.nhnacademy.minidooray_gateway.config.ApiServerProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserDataSearchDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class UserDataService {
-    private final AccountProperties accountProperties;
+    private final ApiServerProperties accountProperties;
     private final RestTemplate restTemplate;
 
 

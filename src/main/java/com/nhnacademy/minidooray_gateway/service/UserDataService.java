@@ -28,7 +28,7 @@ public class UserDataService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<List<UserDataSearchDto>> httpEntity = new HttpEntity<>(httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata";
+                + ":" + accountProperties.getAccountPort() + "/accountapi/userdata/";
 
         ResponseEntity<List<UserDataSearchDto>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
         });

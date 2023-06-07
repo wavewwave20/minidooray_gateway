@@ -5,7 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<button th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">로그아웃</button>
-
+<form th:if="${#authorization.expression('isAuthenticated()')}" th:action="@{/logout}" method="post">
+    <input type="submit" value="로그아웃" />
+</form>
 </body>
 </html>

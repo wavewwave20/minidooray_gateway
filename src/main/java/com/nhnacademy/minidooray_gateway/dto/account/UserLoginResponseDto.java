@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class UserLoginResponseDto {
-
     private String userUUID;
+
 
     private String userId;
 

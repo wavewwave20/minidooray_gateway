@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user/**").authenticated()
+                .antMatchers("/user/**", "/").authenticated()
 //                .antMatchers("/auth/login").authenticated()
                 .anyRequest().permitAll()
                 .and()
@@ -65,9 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
+                    .logoutSuccessUrl("/auth/login")//커밋
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
+
                 .and()
                 .oauth2Login()
                     .loginPage("/oauth2/authorization/github")

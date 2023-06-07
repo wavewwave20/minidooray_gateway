@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
 import javax.servlet.ServletException;
@@ -49,6 +50,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
         //#TODO 테스트용 세션에 유저네임 추가해야 인증이 잘 작동하는듯 합니다
         session.setAttribute("username", userDetails.getUsername());
+        session.setAttribute("authority", authorities.get(0).getAuthority());
+        session.setAttribute("userEmail", userInfoBeanForRedis.getUserEmail());
+        session.setAttribute("userUUID", userInfoBeanForRedis.getUserUUId());
+        session.setAttribute("userNickName", userInfoBeanForRedis.getUserNickname());
+
         log.info("Session ID: " + session.getId());
 
         response.sendRedirect("/dooray/board");

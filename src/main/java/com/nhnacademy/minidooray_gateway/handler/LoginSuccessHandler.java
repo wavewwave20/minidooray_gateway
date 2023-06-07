@@ -42,11 +42,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         session.setMaxInactiveInterval(259200); //TODO: 왜 필요한지
 
 
-        redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
-        redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());
-        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
-        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
-        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
+//        redisTemplate.opsForHash().put(session.getId(), "username", userDetails.getUsername());
+//        redisTemplate.opsForHash().put(session.getId(), "authority", authorities.get(0).getAuthority());
+//        redisTemplate.opsForHash().put(session.getId(), "userEmail", userInfoBeanForRedis.getUserEmail());
+//        redisTemplate.opsForHash().put(session.getId(), "userUUID", userInfoBeanForRedis.getUserUUId());
+//        redisTemplate.opsForHash().put(session.getId(), "userNickName", userInfoBeanForRedis.getUserNickname());
         redisTemplate.boundHashOps(session.getId()).expire(258900, TimeUnit.SECONDS);
         //#TODO 테스트용 세션에 유저네임 추가해야 인증이 잘 작동하는듯 합니다
         session.setAttribute("username", userDetails.getUsername());

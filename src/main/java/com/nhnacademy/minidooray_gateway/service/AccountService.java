@@ -104,8 +104,8 @@ public class AccountService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserRegisterAccountApiDto> httpEntity = new HttpEntity<>(userRegisterAccountApiDto, httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/signup/taskapi";
+        String url = "http://" + accountProperties.getTaskIp()
+                + ":" + accountProperties.getTaskPort() + "/taskapi/signup";
         restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
         });
     }

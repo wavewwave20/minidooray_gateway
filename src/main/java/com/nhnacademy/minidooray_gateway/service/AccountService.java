@@ -4,6 +4,7 @@ import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterAccountApiDto;
 import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
+import com.nhnacademy.minidooray_gateway.dto.account.UserUpdateDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -130,6 +131,28 @@ public class AccountService {
         HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
                 + ":" + accountProperties.getAccountPort() + "/accountapi/update" + "/" + userUUID;
+
+        ResponseEntity<UserUpdateDto> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                httpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        if (Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userRegisterDto.getUserId())) {
+            UserUpdateDto userUpdateDto = responseEntity.getBody();
+            updateUserTaskApi(userUpdateDto, userUUID);
+        }
+        throw new UsernameNotFoundException("no");
+    }
+    public void updateUserTaskApi(UserUpdateDto userUpdateDto, String userUUID) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<UserUpdateDto> httpEntity = new HttpEntity<>(userUpdateDto, httpHeaders);
+        String url = "http://" + accountProperties.getTaskIp()
+                + ":" + accountProperties.getTaskPort() + "/taskapi/update/" + userUUID;
         restTemplate.exchange(url, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
         });
     }

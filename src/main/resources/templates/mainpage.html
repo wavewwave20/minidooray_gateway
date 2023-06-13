@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calendar Schedule Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+    <style>
+        body, html, ul, li, a {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .top-nav {
+            background-color: #007bff; /* 파란색 */
+            height: 55px;
+        }
+
+        .top-nav a {
+            color: #ffffff; /* 흰색 글자 */
+            text-decoration: none;
+        }
+
+        .top-nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .top-nav ul li {
+            margin-right: 20px;
+        }
+
+        .left-nav {
+            position: absolute;
+            width: 276px;
+            height: 100vh;
+            background-color: #f8f9fa;
+            /*padding: 20px;*/
+        }
+
+        .main-content {
+            /*margin-left: 220px;*/
+            /*padding: 20px;*/
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<nav class="top-nav">
+    <ul>
+        <li><a href="#"><i class="fas fa-clock"></i> Clock</a></li>
+        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#"><i class="far fa-calendar-alt"></i> Calendar</a></li>
+        <li><a href="#"><i class="fas fa-hdd"></i> Drive</a></li>
+        <li><a href="#"><i class="fas fa-book"></i> Wiki</a></li>
+    </ul>
+</nav>
+
+<div class="left-nav">
+    <button class="btn btn-primary" id="newEvent">+새일정</button>
+    <div id="miniCalendar"></div>
+</div>
+
+<div class="main-content">
+    <div id="calendar"></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/ko.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // Make new event button functional
+        $('#newEvent').click(function () {
+            // Logic for creating a new event
+            alert("새 일정 버튼을 클릭하였습니다.");
+            var title = prompt("일정의 제목을 입력하세요.");
+            var date = prompt("일정의 날짜를 입력하세요. (예: 2023-07-01)");
+            var eventData;
+            if (title) {
+                eventData = {
+                    title: title,
+                    start: date
+                };
+                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            }
+            $('#calendar').fullCalendar('unselect');
+        })
+
+        // Initialize fullCalendar
+        $('#calendar').fullCalendar({
+            locale: 'ko',
+            header: {
+                left: 'today prev,next',
+                center: '',
+                right: ''
+            },
+
+            defaultDate: '2023-06-13',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: [
+                {
+                    title: '테스트 일정',
+                    start: '2023-06-13'
+                }
+                // other events here
+            ],
+            eventClick: function (calEvent, jsEvent, view) {
+                alert('일정: ' + calEvent.title);
+                alert('좌표: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                alert('뷰: ' + view.name);
+            },
+            dayClick: function (date, jsEvent, view) {
+                alert('클릭한 날짜: ' + date.format());
+                alert('뷰: ' + view.name);
+            }
+        });
+    });
+</script>
+</body>
+</html>

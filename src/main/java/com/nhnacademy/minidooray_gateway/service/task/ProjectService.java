@@ -17,7 +17,7 @@ public class ProjectService {
     }
 
     public void createProject(ProjectCreateDto projectCreateDto) {
-        Object response = restTemplateUtils.requestApi("task", "/projcets", "POST", projectCreateDto, 200, null);
+        Object response = restTemplateUtils.requestApi("task", "/projects", "POST", projectCreateDto, 200, null);
     }
 
     public String getProjectById(Long projectId) {

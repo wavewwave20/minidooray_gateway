@@ -37,7 +37,7 @@ public class TaskController {
         return ResponseEntity.ok(userDto);
     }
 
-    @PostMapping("/prjoects")
+    @PostMapping("/projects")
     public ResponseEntity<?> createProject(@RequestBody ProjectCreateDto projectCreateDto) {
         projectService.createProject(projectCreateDto);
         return ResponseEntity.ok().build();

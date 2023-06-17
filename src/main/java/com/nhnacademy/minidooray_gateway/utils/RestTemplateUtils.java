@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.minidooray_gateway.config.AccountProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -52,9 +53,14 @@ public class RestTemplateUtils {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpMethod httpMethod = HttpMethod.valueOf(method);
         HttpEntity<Object> entity = new HttpEntity<>(requestBody, headers);
+
+        if (responseBody == null) {
+
+            restTemplate.exchange(requestUrl, httpMethod, entity, Void.class);
+            return "OK";
+        }
 
 
         try {

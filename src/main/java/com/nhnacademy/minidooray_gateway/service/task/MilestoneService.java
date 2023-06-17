@@ -21,14 +21,14 @@ public class MilestoneService {
         Object response = restTemplateUtils.requestApi("task", "/milestones", "POST", milestoneCreateDto, 200, null);
     }
 
-    public MilestoneDto getMilestoneById(Long milestoneId) {
-        Object response = restTemplateUtils.requestApi("task", "/milestones/" + milestoneId, "GET", null, 200, MilestoneDto.class);
-        return (MilestoneDto) response;
+    public String getMilestoneById(Long milestoneId) {
+        String response = restTemplateUtils.requestApi("task", "/milestones/" + milestoneId, "GET", null, 200, MilestoneDto.class);
+        return response;
     }
 
-    public List<MilestoneDto> getMilestoneByProjectId(Long projectId) {
-        Object response = restTemplateUtils.requestApi("task", "/milestones/" + projectId + "/milestones", "GET", null, 200, List.class);
-        return (List<MilestoneDto>) response;
+    public String getMilestoneByProjectId(Long projectId) {
+        String response = restTemplateUtils.requestApi("task", "/milestones/" + projectId + "/milestones", "GET", null, 200, List.class);
+        return response;
     }
 
     public void updateMilestoneById(Long milestoneId, MilestoneCreateDto milestoneCreateDto) {
@@ -43,14 +43,14 @@ public class MilestoneService {
         Object response = restTemplateUtils.requestApi("task", "/milestones/" + milestoneId + "/tasks/" + taskId, "POST", null, 200, null);
     }
 
-    public MilestoneDto getMilestoneByTaskId(Long taskId) {
-        Object response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/milestones", "GET", null, 200, MilestoneDto.class);
-        return (MilestoneDto) response;
+    public String getMilestoneByTaskId(Long taskId) {
+        String response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/milestones", "GET", null, 200, MilestoneDto.class);
+        return response;
     }
 
-    public List<TaskDto> getTasksByMilestoneId(Long milestoneId) {
-        Object response = restTemplateUtils.requestApi("task", "/milestones/" + milestoneId + "/tasks", "GET", null, 200, List.class);
-        return (List<TaskDto>) response;
+    public String getTasksByMilestoneId(Long milestoneId) {
+        String response = restTemplateUtils.requestApi("task", "/milestones/" + milestoneId + "/tasks", "GET", null, 200, List.class);
+        return response;
     }
 
     public void deleteMilestoneTask(Long milestoneId, Long taskId) {

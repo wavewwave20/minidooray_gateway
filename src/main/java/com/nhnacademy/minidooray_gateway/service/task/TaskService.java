@@ -23,19 +23,19 @@ public class TaskService {
         Object response = restTemplateUtils.requestApi("task", "/tasks", "POST", taskCreateDto, 200, null);
     }
 
-    public TaskDto getTaskById(Long taskId) {
-        Object response = restTemplateUtils.requestApi("task", "/tasks/" + taskId, "GET", null, 200, TaskDto.class);
-        return (TaskDto) response;
+    public String getTaskById(Long taskId) {
+        String response = restTemplateUtils.requestApi("task", "/tasks/" + taskId, "GET", null, 200, TaskDto.class);
+        return  response;
     }
 
-    public List<TaskDto> getTaskByProjectId(Long projectId) {
-        Object response = restTemplateUtils.requestApi("task", "/tasks/" + projectId + "/tasks", "GET", null, 200, List.class);
-        return (List<TaskDto>) response;
+    public String getTaskByProjectId(Long projectId) {
+        String response = restTemplateUtils.requestApi("task", "/tasks/" + projectId + "/tasks", "GET", null, 200, List.class);
+        return response;
     }
 
-    public List<TaskDto> getTaskByAdminUserUUID(String userUUID) {
-        Object response = restTemplateUtils.requestApi("task", "/tasks/" + userUUID + "/admin/tasks", "GET", null, 200, List.class);
-        return (List<TaskDto>) response;
+    public String getTaskByAdminUserUUID(String userUUID) {
+        String response = restTemplateUtils.requestApi("task", "/tasks/" + userUUID + "/admin/tasks", "GET", null, 200, List.class);
+        return response;
     }
 
     public void updateTaskById(Long taskId, TaskDto taskDto) {
@@ -50,9 +50,9 @@ public class TaskService {
         Object response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/tags/" + tagId, "POST", null, 200, null);
     }
 
-    public List<TaskDto> getTasksByTag(Long tagId) {
-        Object response = restTemplateUtils.requestApi("task", "/tags/" + tagId + "/tasks", "GET", null, 200, List.class);
-        return (List<TaskDto>) response;
+    public String getTasksByTag(Long tagId) {
+        String response = restTemplateUtils.requestApi("task", "/tags/" + tagId + "/tasks", "GET", null, 200, List.class);
+        return response;
     }
 
     public void deleteTaskTag(Long taskId, Long tagId) {
@@ -63,9 +63,9 @@ public class TaskService {
         Object response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/users/" + userUUID, "POST", null, 200, null);
     }
 
-    public List<UserTaskDto> getUserTaskByTaskId(Long taskId) {
-        Object response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/users", "GET", null, 200, List.class);
-        return (List<UserTaskDto>) response;
+    public String getUserTaskByTaskId(Long taskId) {
+        String response = restTemplateUtils.requestApi("task", "/tasks/" + taskId + "/users", "GET", null, 200, List.class);
+        return response;
     }
 
     public void deleteUserTask(Long taskId, String userUUID) {

@@ -29,18 +29,18 @@ public class TagService {
         Object response = restTemplateUtils.requestApi("task", "/tags/" + tagId, "PUT", tagCreateDto, 200, null);
     }
 
-    public TagDto getTagById(Long tagId) {
-        Object response = restTemplateUtils.requestApi("task", "/tags/" + tagId, "GET", null, 200, TagDto.class);
-        return (TagDto) response;
+    public String getTagById(Long tagId) {
+        String response = restTemplateUtils.requestApi("task", "/tags/" + tagId, "GET", null, 200, TagDto.class);
+        return response;
     }
 
-    public List<TagDto> getTagByProjectId(Long projectId) {
-        Object response = restTemplateUtils.requestApi("task", "/tags/" + projectId + "/tags", "GET", null, 200, List.class);
-        return (List<TagDto>) response;
+    public String getTagByProjectId(Long projectId) {
+        String response = restTemplateUtils.requestApi("task", "/tags/" + projectId + "/tags", "GET", null, 200, List.class);
+        return response;
     }
 
-    public List<TaskDto> getTasksByTag(Long tagId) {
-        Object response = restTemplateUtils.requestApi("task", "/tags/" + tagId + "/tasks", "GET", null, 200, List.class);
-        return (List<TaskDto>) response;
+    public String getTasksByTag(Long tagId) {
+        String response = restTemplateUtils.requestApi("task", "/tags/" + tagId + "/tasks", "GET", null, 200, List.class);
+        return response;
     }
 }

@@ -27,14 +27,14 @@ public class CommentService {
         restTemplateUtils.requestApi("task", "/comments/" + commentId, "DELETE", null, 200, null);
     }
 
-    public CommentDto getCommentById(Long commentId) {
-        Object response = restTemplateUtils.requestApi("task", "/comments/" + commentId, "GET", null, 200, CommentDto.class);
-        return (CommentDto) response;
+    public String getCommentById(Long commentId) {
+        String response = restTemplateUtils.requestApi("task", "/comments/" + commentId, "GET", null, 200, CommentDto.class);
+        return response;
     }
 
-    public List<CommentDto> getCommentByTaskId(Long taskId) {
-        Object response = restTemplateUtils.requestApi("task", "/comments/" + taskId + "/comments", "GET", null, 200, List.class);
-        return (List<CommentDto>) response;
+    public String getCommentByTaskId(Long taskId) {
+        String response = restTemplateUtils.requestApi("task", "/comments/" + taskId + "/comments", "GET", null, 200, List.class);
+        return response;
     }
 
 }

@@ -9,11 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class MileStoneDto {
+public class MilestoneDto {
 
-    public enum MilestoneStatusEnum {
-        ACTIVE, INACTIVE, COMPLETED;
-    }
 
     private Long milestoneId;
     private String milestoneName;

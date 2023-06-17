@@ -1,13 +1,13 @@
 package com.nhnacademy.minidooray_gateway.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.minidooray_gateway.config.AccountProperties;
-import com.nhnacademy.minidooray_gateway.dto.account.UserLoginResponseDto;
-import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterAccountApiDto;
-import com.nhnacademy.minidooray_gateway.dto.account.UserRegisterDto;
-import com.nhnacademy.minidooray_gateway.dto.account.UserUpdateDto;
+import com.nhnacademy.minidooray_gateway.dto.account.*;
+import com.nhnacademy.minidooray_gateway.utils.RestTemplateUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,8 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,88 +29,48 @@ import java.util.Objects;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@Slf4j
 public class AccountService {
     private final AccountProperties accountProperties;
     private final RestTemplate restTemplate;
     private final UserInfoBeanForRedis userInfoBeanForRedis;
     private final PasswordEncoder passwordEncoder;
 
+    private final RestTemplateUtils restTemplateUtils;
 
-    //#TODO:RestTemplate 수정요
+
     public UserDetails login(String userId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/login" + "/" + userId;
+        UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setUserId(userId);
 
-        ResponseEntity<UserLoginResponseDto> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                httpEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-
-        if (Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userId)) {
-
-            UserLoginResponseDto userInfo = responseEntity.getBody();
-
-            //TODO: userUUID, userNickname 인메모리 저장하여 successHandler에서 사용 필
-//            ThreadLocal.set(userInfo.getUserNickname(), userInfo.getUserUUID());
-
-            userInfoBeanForRedis.setUserUUId(responseEntity.getBody().getUserUUID());
-            userInfoBeanForRedis.setUserNickname(responseEntity.getBody().getUserNickname());
-            userInfoBeanForRedis.setUserEmail(responseEntity.getBody().getUserEmail());
-
-
-            return new User(Objects.requireNonNull(userInfo).getUserId(), userInfo.getUserPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER")));
+        Object response = restTemplateUtils.requestApi("account", "/login" + "/" + userId, "GET", userLoginDto, 200, UserLoginResponseDto.class);
+        if(response == null) {
+            throw new UsernameNotFoundException(userId + "not found");
         }
+        UserLoginResponseDto userInfo = (UserLoginResponseDto) response;
 
-        throw new UsernameNotFoundException(userId + "not found");
+        userInfoBeanForRedis.setUserUUId(userInfo.getUserUUID());
+        userInfoBeanForRedis.setUserNickname(userInfo.getUserNickname());
+        userInfoBeanForRedis.setUserEmail(userInfo.getUserEmail());
+
+        return new User(Objects.requireNonNull(userInfo).getUserId(), userInfo.getUserPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER")));
     }
 
     public void logout() {
         //#TODO 시큐리티가 해주는지 확인하기(/logout)
     }
 
-
-    //TODO: taskApi, AccountApi api 추가 및 수정 필요
     public void register(UserRegisterDto userRegisterDto) {
         userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
-        String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/signup";
-
-        ResponseEntity<UserRegisterAccountApiDto> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                httpEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-
-        if (Objects.requireNonNull(responseEntity.getBody()).getUserId().equals(userRegisterDto.getUserId())) {
-            UserRegisterAccountApiDto forTaskApi = responseEntity.getBody();
-            registerUserTaskApi(forTaskApi);
+        Object response = restTemplateUtils.requestApi("account", "/users", "POST", userRegisterDto, 201, UserRegisterAccountApiDto.class);
+        if(response == null) {
+            throw new UsernameNotFoundException("no");
         }
-        throw new UsernameNotFoundException("no");
-    }
-    //#TODO 회원가입시 아래의 메서드 호출됩니다?
-    public void registerUserTaskApi(UserRegisterAccountApiDto userRegisterAccountApiDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<UserRegisterAccountApiDto> httpEntity = new HttpEntity<>(userRegisterAccountApiDto, httpHeaders);
-        String url = "http://" + accountProperties.getTaskIp()
-                + ":" + accountProperties.getTaskPort() + "/taskapi/signup";
-        restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
-        });
+        UserRegisterAccountApiDto userInfo = (UserRegisterAccountApiDto) response;
+
+        restTemplateUtils.requestApi("task", "/users", "POST" ,userInfo,200,null);
+
     }
 
 
@@ -118,7 +80,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/delete" + "/" + userId;
+                + ":" + accountProperties.getAccountPort() + "/api/account/users" + "/" + userId;
         restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
         });
     }
@@ -130,7 +92,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserRegisterDto> httpEntity = new HttpEntity<>(userRegisterDto, httpHeaders);
         String url = "http://" + accountProperties.getAccountIp()
-                + ":" + accountProperties.getAccountPort() + "/accountapi/update" + "/" + userUUID;
+                + ":" + accountProperties.getAccountPort() + "/api/account/users" + "/" + userUUID;
 
         ResponseEntity<UserUpdateDto> responseEntity = restTemplate.exchange(
                 url,
@@ -152,7 +114,7 @@ public class AccountService {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<UserUpdateDto> httpEntity = new HttpEntity<>(userUpdateDto, httpHeaders);
         String url = "http://" + accountProperties.getTaskIp()
-                + ":" + accountProperties.getTaskPort() + "/taskapi/update/" + userUUID;
+                + ":" + accountProperties.getTaskPort() + "/api/task/users/" + userUUID;
         restTemplate.exchange(url, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
         });
     }

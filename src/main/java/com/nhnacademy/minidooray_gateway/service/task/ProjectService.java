@@ -17,12 +17,12 @@ public class ProjectService {
     }
 
     public void createProject(ProjectCreateDto projectCreateDto) {
-        Object response = restTemplateUtils.requestApi("task", "/projcets", "POST", projectCreateDto, 200, null);
+        Object response = restTemplateUtils.requestApi("task", "/projects", "POST", projectCreateDto, 200, null);
     }
 
-    public ProjectDto getProjectById(Long projectId) {
-        Object response = restTemplateUtils.requestApi("task", "/projects/" + projectId, "GET", null, 200, ProjectDto.class);
-        return (ProjectDto) response;
+    public String getProjectById(Long projectId) {
+        String response = restTemplateUtils.requestApi("task", "/projects/" + projectId, "GET", null, 200, ProjectDto.class);
+        return response;
     }
 
     public void updateProjectById(Long projectId, ProjectDto projectDto) {
@@ -45,9 +45,9 @@ public class ProjectService {
         Object response = restTemplateUtils.requestApi("task", "/projects/" + projectId + "/users", "DELETE", null, 200, null);
     }
 
-    public List<UserDto> getProjectUserAll(Long projectId) {
-        Object response = restTemplateUtils.requestApi("task", "/projects/" + projectId + "/users", "GET", null, 200, List.class);
-        return (List<UserDto>) response;
+    public String getProjectUserAll(Long projectId) {
+        String response = restTemplateUtils.requestApi("task", "/projects/" + projectId + "/users", "GET", null, 200, List.class);
+        return response;
     }
 
 

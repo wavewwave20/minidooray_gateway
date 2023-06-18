@@ -2,7 +2,7 @@
 
 ## user
 
-### POST /api/task/users
+### POST /api/users
 - Description: 새로운 사용자를 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -18,7 +18,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/users/{userUUID}
+### GET /api/users/{userUUID}
 - Description: 사용자 UUID로 조회한 사용자 정보를 반환합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -34,7 +34,7 @@
   |userEmail|string|Y||
 </br>
 
-### GET /api/task/users
+### GET /api/users
 - Description: 모든 사용자 정보리스트를 반환합니다.
 - Path Variables: None
 - Response Code: 200 ok
@@ -48,7 +48,7 @@
   |userEmail|string|Y||
 </br>
 
-### PUT /api/task/users/{userUUID}
+### PUT /api/users/{userUUID}
 - Description: 사용자 UUID로 조회하여 사용자 정보를 수정합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -65,7 +65,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/users/{userUUID}
+### DELETE /api/users/{userUUID}
 - Description: 사용자 UUID로 대상 사용자 정보를 삭제합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -74,7 +74,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/users/{userUUID}/tasks
+### GET /api/users/{userUUID}/tasks
 - Description: 사용자 UUID로 조회한 사용자의 모든 태스크 리스트를 반환합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -87,7 +87,7 @@
   |taskId|long|Y||
 </br>
 
-### GET /api/task/users/{userUUID}/projects
+### GET /api/users/{userUUID}/projects
 - Description: 사용자 UUID로 조회한 사용자의 모든 프로젝트 리스트를 반환합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -106,7 +106,7 @@
 
 ## project
 
-### POST /api/task/projects
+### POST /api/projects
 - Description: 새로운 프로젝트를 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -122,7 +122,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/projects/{projectId}
+### GET /api/projects/{projectId}
 - Description: 프로젝트 ID로 조회한 프로젝트 정보를 반환합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -139,7 +139,7 @@
     |userUUID|string|Y||
 </br>
 
-### PUT /api/task/projects/{projectId}
+### PUT /api/projects/{projectId}
 - Description: 프로젝트 ID로 조회하여 프로젝트 정보를 수정합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -156,7 +156,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/projects/{projectId}
+### DELETE /api/projects/{projectId}
 - Description: 프로젝트 ID로 대상 프로젝트 정보를 삭제합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -164,7 +164,7 @@
 - Response Body: None
 </br>
 
-### POST /api/task/projects/{projectId}/users/{userUUID}
+### POST /api/projects/{projectId}/users/{userUUID}
 - Description: 프로젝트 ID와 사용자 UUID로 조회하여 프로젝트에 사용자를 추가합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -173,7 +173,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/projects/{projectId}/users
+### GET /api/projects/{projectId}/users
 - Description: 프로젝트 ID로 조회한 프로젝트의 모든 사용자 리스트를 반환합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -188,7 +188,7 @@
     |userEmail|string|Y||
 </br>
 
-### DELETE /api/task/projects/{projectId}/users/{userUUID}
+### DELETE /api/projects/{projectId}/users/{userUUID}
 - Description: 프로젝트 ID와 사용자 UUID로 조회하여 프로젝트에서 사용자를 삭제합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -197,7 +197,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/projects/{projectId}/users
+### DELETE /api/projects/{projectId}/users
 - Description: 프로젝트 ID로 조회한 프로젝트의 모든 사용자를 삭제합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -207,7 +207,7 @@
 
 ## task
 
-### POST /api/task/tasks
+### POST /api/tasks
 - Description: 새로운 태스크를 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -225,7 +225,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/tasks/{taskId}
+### GET /api/tasks/{taskId}
 - Description: 태스크 ID로 조회한 태스크 정보를 반환합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -243,7 +243,7 @@
     |projectId|long|Y||
 </br>
 
-### GET /tasks/projects/{projectId}
+### GET /api/tasks/projects/{projectId}
 - Description: 프로젝트 ID로 조회한 태스크 정보 리스트를 반환합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -260,7 +260,7 @@
     |userUUID|string|Y||
     |projectId|long|Y||
 
-### GET /tasks/users/{userUUID}/admin
+### GET /api/tasks/users/{userUUID}/admin
 - Description: 사용자 UUID로 조회하여 관리자로 있는 태스크 리스트를 반환합니다.
 - Path Variables: 
     - userUUID: 사용자 UUID
@@ -278,7 +278,7 @@
     |projectId|long|Y||
 </br>
 
-### PUT /tasks/{taskId}
+### PUT /api/tasks/{taskId}
 - Description: 태스크 ID로 조회하여 태스크 정보를 수정합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -292,7 +292,7 @@
     |taskEndDate|datetime|Y||
 </br>
 
-### DELETE /tasks/{taskId}
+### DELETE /api/tasks/{taskId}
 - Description: 태스크 ID로 대상 태스크 정보를 삭제합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -300,7 +300,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/tasks/{taskId}/milestones
+### GET /api/tasks/{taskId}/milestones
 - Description: 태스크 ID로 조회한 마일스톤 정보 리스트를 반환합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -317,7 +317,7 @@
     |projectId|long|Y||
 </br>
 
-### POST /api/task/tasks/{taskId}/tags/{tagId}
+### POST /api/tasks/{taskId}/tags/{tagId}
 - Description: 태스크 ID로 조회한 태스크에 태그를 추가합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -326,7 +326,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/tasks/{taskId}/tags
+### GET /api/tasks/{taskId}/tags
 - Description: 태스크 ID로 조회한 태스크가 가지는 태그 리스트를 반환합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -340,7 +340,7 @@
     |projectId|long|Y||
 </br>
 
-### DELETE /api/task/tasks/{taskId}/tags/{tagId}
+### DELETE /api/tasks/{taskId}/tags/{tagId}
 - Description: 태스크가 가진 태그를 삭제합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -349,7 +349,7 @@
 - Response Body: None
 </br>
 
-### POST /api/task/tasks/{taskId}/users/{userUUID}
+### POST /api/tasks/{taskId}/users/{userUUID}
 - Description: 태스크 ID로 조회한 태스크에 사용자를 추가합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -357,7 +357,7 @@
 - Response Code: 200 ok
 - Response Body: None
 
-### GET /api/task/tasks/{taskId}/users
+### GET /api/tasks/{taskId}/users
 - Description: 태스크에 등록된 사용자 리스트를 반환합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -370,7 +370,7 @@
     |TaskId|long|Y||
 </br>
 
-### DELETE /api/task/tasks/{taskId}/users/{userUUID}
+### DELETE /api/tasks/{taskId}/users/{userUUID}
 - Description: 태스크에 등록된 사용자를 삭제합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -383,7 +383,7 @@
 
 ## tag
 
-### POST /api/task/tags
+### POST /api/tags
 - Description: 새로운 태그를 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -396,7 +396,7 @@
 - Response Code: 200 ok
 - Response Body: None
 
-### GET /api/task/tags/{tagId}
+### GET /api/tags/{tagId}
 - Description: 태그 ID로 조회한 태그 정보를 반환합니다.
 - Path Variables: 
     - tagId: 태그 ID
@@ -410,7 +410,7 @@
     |projectId|long|Y||
 </br>
 
-### GET /api/task/tags/projects/{projectId}
+### GET /api/tags/projects/{projectId}
 - Description: 프로젝트 ID로 조회한 태그 정보 리스트를 반환합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -423,7 +423,7 @@
     |tagName|string|Y||
     |projectId|long|Y||
 
-### PUT /api/task/tags/{tagId}
+### PUT /api/tags/{tagId}
 - Description: 태그 ID로 조회하여 태그 정보를 수정합니다.
 - Path Variables: 
     - tagId: 태그 ID
@@ -437,7 +437,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/tags/{tagId}
+### DELETE /api/tags/{tagId}
 - Description: 태그 ID로 대상 태그 정보를 삭제합니다.
 - Path Variables: 
     - tagId: 태그 ID
@@ -445,7 +445,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/tags/{tagId}/tasks
+### GET /api/tags/{tagId}/tasks
 - Description: 해당 태그를 가진 태스크 리스트를 반환합니다.
 - Path Variables: 
     - tagId: 태그 ID
@@ -467,7 +467,7 @@
 
 ## milestone
 
-### POST /api/task/milestones
+### POST /api/milestones
 - Description: 새로운 마일스톤을 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -484,7 +484,7 @@
 - Response Body: None
 </br>
 
-### GET /api/task/milestones/{milestoneId}
+### GET /api/milestones/{milestoneId}
 - Description: 마일스톤 ID로 조회한 마일스톤 정보를 반환합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -501,7 +501,7 @@
     |projectId|long|Y||
 </br>
 
-### GET /api/task/milestones/projects/{projectId}
+### GET /api/milestones/projects/{projectId}
 - Description: 프로젝트 ID로 조회한 마일스톤 정보 리스트를 반환합니다.
 - Path Variables: 
     - projectId: 프로젝트 ID
@@ -518,7 +518,7 @@
     |projectId|long|Y||
 </br>
 
-### PUT /api/task/milestones/{milestoneId}
+### PUT /api/milestones/{milestoneId}
 - Description: 마일스톤 ID로 조회하여 마일스톤 정보를 수정합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -535,7 +535,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/milestones/{milestoneId}
+### DELETE /api/milestones/{milestoneId}
 - Description: 마일스톤 ID로 대상 마일스톤 정보를 삭제합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -543,7 +543,7 @@
 - Response Body: None
 </br>
 
-### POST /api/task/milestones/{milestoneId}/tasks/{taskId}
+### POST /api/milestones/{milestoneId}/tasks/{taskId}
 - Description: 마일스톤에 태스크를 추가합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -551,7 +551,7 @@
 - Response Code: 200 ok
 - Response Body: None
 
-### GET /api/task/milestones/{milestoneId}/tasks
+### GET /api/milestones/{milestoneId}/tasks
 - Description: 마일스톤 ID로 조회한 태스크 정보 리스트를 반환합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -566,7 +566,7 @@
     |taskEndDate|datetime|Y||
 </br>
 
-### DELETE /api/task/milestones/{milestoneId}/tasks/{taskId}
+### DELETE /api/milestones/{milestoneId}/tasks/{taskId}
 - Description: 태스크에 등록된 마일스톤을 삭제합니다.
 - Path Variables: 
     - milestoneId: 마일스톤 ID
@@ -577,7 +577,7 @@
 
 ## comment
 
-### POST /api/task/comments
+### POST /api/comments
 - Description: 새로운 코멘트를 추가합니다.
 - Path Variables: None
 - Request Body: JSON 형식 요청
@@ -592,7 +592,7 @@
 - Response Code: 200 ok
 - Response Body: None
 
-### GET /api/task/comments/{commentId}
+### GET /api/comments/{commentId}
 - Description: 코멘트 ID로 조회한 코멘트 정보를 반환합니다.
 - Path Variables: 
     - commentId: 코멘트 ID
@@ -608,7 +608,7 @@
     |taskId|long|Y||
 </br>
 
-### GET /api/task/comments/tasks/{taskId}
+### GET /api/comments/tasks/{taskId}
 - Description: 태스크 ID로 조회한 코멘트 정보 리스트를 반환합니다.
 - Path Variables: 
     - taskId: 태스크 ID
@@ -623,7 +623,7 @@
     |userUUID|string|Y||
     |taskId|long|Y||
 
-### PUT /api/task/comments/{commentId}
+### PUT /api/comments/{commentId}
 - Description: 코멘트 ID로 조회하여 코멘트 정보를 수정합니다.
 - Path Variables: 
     - commentId: 코멘트 ID
@@ -639,7 +639,7 @@
 - Response Body: None
 </br>
 
-### DELETE /api/task/comments/{commentId}
+### DELETE /api/comments/{commentId}
 - Description: 코멘트 ID로 대상 코멘트 정보를 삭제합니다.
 - Path Variables: 
     - commentId: 코멘트 ID
